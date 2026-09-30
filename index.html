@@ -3,16 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="light">
 <title>Brain Drain or Brain Gain?</title>
 <style>
   /* Peony palette, light version: soft cream and blush backgrounds, petal pinks and corals as the accents */
-  :root { --bg:#fff8ee; --bg2:#ffe4d9; --card:#fffefb; --ink:#2a3100; --muted:#75614c; --line:#f6d2c6;
+  :root { color-scheme: only light; --bg:#fff8ee; --bg2:#ffe4d9; --card:#fffefb; --ink:#2a3100; --muted:#75614c; --line:#f6d2c6;
           --petal:#ffeae3; --accent:#c81e4e; --accent2:#f0566a; --on-accent:#ffffff; --bad:#b3001b; --ok:#3f6b10; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#1e2400; --bg2:#3a0a1a; --card:#2b2a12; --ink:#fbf0d2; --muted:#dcc9a0; --line:#5a4a2a;
-            --petal:#3a2326; --accent:#f2a67f; --accent2:#ff6b7d; --on-accent:#2a1000; --bad:#ff9a9a; --ok:#b5e07a; }
-    body::before { opacity:.45; }
-  }
   input, select, textarea { accent-color: var(--accent2); }
   * { box-sizing:border-box; }
   body { margin:0; background:linear-gradient(160deg,var(--bg),var(--bg2)) fixed; min-height:100vh; color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
