@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brain Drain or Brain Gain?</title>
+<style>
+  /* Peony palette, light version: soft cream and blush backgrounds, petal pinks and corals as the accents */
+  :root { --bg:#fff8ee; --bg2:#ffe4d9; --card:#fffefb; --ink:#2a3100; --muted:#75614c; --line:#f6d2c6;
+          --petal:#ffeae3; --accent:#c81e4e; --accent2:#f0566a; --on-accent:#ffffff; --bad:#b3001b; --ok:#3f6b10; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1e2400; --bg2:#3a0a1a; --card:#2b2a12; --ink:#fbf0d2; --muted:#dcc9a0; --line:#5a4a2a;
+            --petal:#3a2326; --accent:#f2a67f; --accent2:#ff6b7d; --on-accent:#2a1000; --bad:#ff9a9a; --ok:#b5e07a; }
+    body::before { opacity:.45; }
+  }
+  input, select, textarea { accent-color: var(--accent2); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:linear-gradient(160deg,var(--bg),var(--bg2)) fixed; min-height:100vh; color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  /* big petal blooms peeking in from the corners */
+  body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none; background-repeat:no-repeat;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f5a78c%22%20transform%3D%22rotate%2822.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f5a78c%22%20transform%3D%22rotate%2867.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f5a78c%22%20transform%3D%22rotate%28112.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f5a78c%22%20transform%3D%22rotate%28157.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2217%22%20fill%3D%22%23efe0b8%22%2F%3E%3Ccircle%20cx%3D%2294%22%20cy%3D%2294%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22106%22%20cy%3D%2295%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22106%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%2292%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22108%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23fbc1a8%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23fbc1a8%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23fbc1a8%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23fbc1a8%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f59aa8%22%20transform%3D%22rotate%2822.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f59aa8%22%20transform%3D%22rotate%2867.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f59aa8%22%20transform%3D%22rotate%28112.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f59aa8%22%20transform%3D%22rotate%28157.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23e8465a%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23e8465a%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23e8465a%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23e8465a%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2217%22%20fill%3D%22%23efe0b8%22%2F%3E%3Ccircle%20cx%3D%2294%22%20cy%3D%2294%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22106%22%20cy%3D%2295%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22106%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%2292%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22108%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3C%2Fsvg%3E"),url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2292%22%20ry%3D%2234%22%20fill%3D%22%23f9b3bf%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f2a67f%22%20transform%3D%22rotate%2822.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f2a67f%22%20transform%3D%22rotate%2867.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f2a67f%22%20transform%3D%22rotate%28112.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2266%22%20ry%3D%2228%22%20fill%3D%22%23f2a67f%22%20transform%3D%22rotate%28157.5%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%280%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%2845%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%2890%20100%20100%29%22%2F%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22100%22%20rx%3D%2242%22%20ry%3D%2220%22%20fill%3D%22%23ee5f74%22%20transform%3D%22rotate%28135%20100%20100%29%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2217%22%20fill%3D%22%23efe0b8%22%2F%3E%3Ccircle%20cx%3D%2294%22%20cy%3D%2294%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22106%22%20cy%3D%2295%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22106%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%2292%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3Ccircle%20cx%3D%22108%22%20cy%3D%22104%22%20r%3D%222.6%22%20fill%3D%22%23e8b830%22%2F%3E%3C%2Fsvg%3E");
+    background-position:right -80px top -80px,left -100px bottom -100px,right 5% bottom 6%;
+    background-size:300px,360px,120px; }
+  main { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:10px 10px 40px; }
+  .card { background-color:var(--card); background-image:linear-gradient(90deg,#f7b3a0,#f2a67f,#f0566a,#c81e4e,#f0566a,#f2a67f); background-size:100% 8px; background-repeat:no-repeat; border:1px solid var(--line); border-radius:14px; padding:20px 14px 16px; box-shadow:0 6px 24px rgba(200,30,78,.10); }
+  @media (min-width:640px) { main { padding:20px 16px 56px; } .card { padding:28px 24px 22px; } }
+  @media (max-width:600px) { body::before { background-size:200px,240px,0; } }
+  h1 { font-size:1.5rem; margin:0 0 6px; color:var(--accent); }
+  h2 { font-size:1.15rem; margin:0 0 10px; color:var(--accent); }
+  p { margin:0 0 10px; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  label { display:block; font-weight:600; margin:14px 0 5px; }
+  input[type=text], input[type=number], select, textarea {
+    width:100%; padding:10px; font:inherit; color:inherit; background:var(--card);
+    border:1.5px solid var(--line); border-radius:8px; }
+  input[type=text]:focus, input[type=number]:focus, select:focus, textarea:focus { border-color:var(--accent2); }
+  textarea { min-height:180px; resize:vertical; }
+  .opt { display:flex; gap:8px; align-items:flex-start; font-weight:400; margin:6px 0; }
+  .opt input { margin-top:5px; }
+  .scale { display:flex; gap:14px; flex-wrap:wrap; }
+  .prompt { background:var(--petal); border-left:5px solid var(--accent2); padding:12px 14px; border-radius:6px; margin:12px 0; font-weight:600; }
+  .count { display:flex; justify-content:space-between; font-size:.9rem; color:var(--muted); margin-top:6px; }
+  .count .ok { color:var(--ok); font-weight:600; }
+  button { font:inherit; font-weight:600; padding:11px 20px; border:0; border-radius:8px; background:var(--accent); color:var(--on-accent); cursor:pointer; margin-top:18px; }
+  button.secondary { background:transparent; color:var(--accent); border:1.5px solid var(--accent); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .err { color:var(--bad); font-size:.92rem; min-height:1.2em; margin-top:8px; }
+  .progress { height:7px; background:var(--line); border-radius:4px; margin-bottom:10px; overflow:hidden; }
+  .progress div { height:100%; background:linear-gradient(90deg,#f7b3a0,#f2a67f,#f0566a,#c81e4e); width:0; transition:width .2s; }
+  .hidden { display:none; }
+  .info { background:var(--petal); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:12px 0; }
+  .info h2 { font-size:1.05rem; margin:0 0 6px; }
+  .info ul { margin:0 0 6px; padding-left:20px; }
+  .info li { margin:4px 0; }
+  .info p:last-child { margin-bottom:0; }
+  .hero { width:100%; height:auto; display:block; border-radius:10px; margin:0 0 14px; }
+  .hero .th { font-size:14px; font-weight:600; }
+  .hero .ts { font-size:12px; }
+  .tlx { margin:14px 0; }
+  .tlx input { width:100%; }
+  .ends { display:flex; justify-content:space-between; font-size:.85rem; color:var(--muted); }
+  .ends .v { font-weight:600; color:var(--ink); }
+  a.btn { display:inline-block; font-weight:600; padding:11px 20px; border-radius:8px; background:var(--accent); color:var(--on-accent); text-decoration:none; margin:18px 0 0 8px; }
+  a.btn:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  a { color:var(--accent); }
+  .notice { background:var(--petal); border-left:5px solid var(--accent); border-radius:6px; padding:12px 14px; margin:10px 0 14px; }
+  .opts { display:grid; gap:12px; grid-template-columns:1fr; }
+  @media (min-width:640px) { .opts { grid-template-columns:1fr 1fr; } }
+  .notice a.btn { margin:12px 0 0; }
+  ol.steps { list-style:none; counter-reset:s; padding:0; margin:0; }
+  ol.steps li { counter-increment:s; position:relative; padding:12px 12px 14px 52px; background:var(--petal); border:1px solid var(--line); border-radius:10px; margin:10px 0; }
+  ol.steps li::before { content:counter(s); position:absolute; left:14px; top:12px; width:28px; height:28px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:700; display:grid; place-items:center; }
+  ol.steps button, ol.steps a.btn { margin:10px 0 0; }
+  ol.steps .err { min-height:0; }
+  @media (max-width:480px) { button, a.btn { width:100%; text-align:center; } h1 { font-size:1.35rem; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+  <div id="app" class="card"></div>
+</main>
+
+<script>
+/* ---------- CONFIG ---------- */
+// Optional: paste a Google Apps Script / Formspree / your own URL here to receive each response as JSON.
+// Leave empty if participants will submit through the Google Form (copy or file) instead.
+const ENDPOINT = "";
+
+// Keep these fixed once data collection starts, so later rounds stay comparable.
+const STUDY_VERSION = "v1";
+const COHORT = "all_students";   // open to all levels; filter on participant.level ("undergraduate" / "postgraduate" / "doctoral" / "faculty") when analysing
+const MIN_WORDS = 80, MAX_WORDS = 120;
+// Paste the link to your Google Form here. It appears on the last page.
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdGubDABGbA1SUDl68BInO3gLkr7eR9nyCWirwYzMmf76_3aA/viewform?usp=header";
+// Optional: researcher name and email/phone shown in the consent section, an email address.
+const RESEARCHER_CONTACT = "naqiya.bharmal22@stmirascollegepune.edu.in";
+
+// Each participant gets ONE randomly chosen set. Within it, which topic goes to
+// the independent task and which to the AI task is also randomized (counterbalancing).
+const SETS = {
+  A: ["Students should be allowed to use their phones in class as long as they don't disturb others.",
+      "Every school should require students to learn a second language."],
+  B: ["It is better to have a few close friends than a large social circle.",
+      "Living in a big city is better than living in a small town."],
+  C: ["Social media does more good than harm to society.",
+      "Online shopping does more good than harm to local businesses."],
+  D: ["Attendance should not be compulsory in college.",
+      "Every student should be taught how to manage money before graduating."]
+};
+const setIds = Object.keys(SETS);
+const setId = setIds[Math.floor(Math.random() * setIds.length)];
+const swapTopics = Math.random() < 0.5;
+const [topicA, topicB] = SETS[setId];
+const PROMPTS = swapTopics ? { independent: topicB, ai: topicA } : { independent: topicA, ai: topicB };
+const AI_USE_TYPES = [
+  "I asked the AI to write the full response and used it (edited or not)",
+  "I asked the AI for ideas or an outline, then wrote it myself",
+  "I wrote a draft first, then asked the AI to improve it",
+  "I used the AI only for grammar, spelling or fact checks"
+];
+
+const HONESTY = ["Completely on my own", "Mostly on my own, with a little outside help", "I used AI or other outside help"];
+
+/* ---------- STATE ---------- */
+const order = Math.random() < 0.5 ? ["independent", "ai"] : ["ai", "independent"];
+const data = { study_version: STUDY_VERSION, cohort: COHORT, participant: {}, order, prompt_set: setId, topics_swapped: swapTopics, tasks: {}, started_at: new Date().toISOString() };
+const steps = ["intro", "task1", "task2", "done"];
+let step = 0, tracker = null;
+
+const app = document.getElementById("app");
+const bar = document.getElementById("bar");
+const $ = (s, r = document) => r.querySelector(s);
+const words = t => (t.trim().match(/\S+/g) || []).length;
+
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function scale(name, lo, hi) {
+  let out = '<div class="scale">';
+  for (let i = 1; i <= 5; i++) out += `<label class="opt"><input type="radio" name="${name}" value="${i}"> ${i}</label>`;
+  return out + `</div><div class="muted">1 = ${lo} &nbsp; 5 = ${hi}</div>`;
+}
+const TLX = [
+  ["mental", "Mental demand", "How mentally demanding was the task?", "Very low", "Very high"],
+  ["physical", "Physical demand", "How physically demanding was the task?", "Very low", "Very high"],
+  ["temporal", "Temporal demand", "How hurried or rushed was the pace of the task?", "Very low", "Very high"],
+  ["performance", "Performance", "How successful were you in accomplishing what you were asked to do?", "Perfect", "Failure"],
+  ["effort", "Effort", "How hard did you have to work to accomplish your level of performance?", "Very low", "Very high"],
+  ["frustration", "Frustration", "How insecure, discouraged, irritated, stressed and annoyed were you?", "Very low", "Very high"]
+];
+function tlxHTML() {
+  return TLX.map(([k, t, q, lo, hi]) => `<div class="tlx"><div><b>${t}</b>: ${q}</div>
+    <input type="range" min="0" max="100" step="5" value="50" data-k="${k}" aria-label="${t}">
+    <div class="ends"><span>${lo}</span><span class="v" id="v-${k}">move the slider</span><span>${hi}</span></div></div>`).join("");
+}
+function bindTLX() {
+  document.querySelectorAll(".tlx input").forEach(r => {
+    const mark = () => { r.dataset.t = "1"; $("#v-" + r.dataset.k).textContent = r.value; };
+    ["input", "change", "pointerup", "keydown"].forEach(ev => r.addEventListener(ev, mark));
+  });
+}
+function tlxDone() { return [...document.querySelectorAll(".tlx input")].every(r => r.dataset.t); }
+function tlxValues() {
+  const o = {}; let sum = 0;
+  TLX.forEach(([k]) => { const v = +$(`.tlx input[data-k=${k}]`).value; o[k] = v; sum += v; });
+  o.raw_tlx = Math.round(sum / TLX.length * 10) / 10;
+  return o;
+}
+function setProgress() { bar.style.width = (step / (steps.length - 1) * 100) + "%"; }
+
+/* ---------- SCREENS ---------- */
+const HERO = `<svg class="hero" viewBox="0 0 680 450" role="img" aria-label="A sad brain leaving with a suitcase beside a happy brain in a graduation cap, illustrating brain drain and brain gain"><title>Brain drain and brain gain characters</title>
+<rect x="0" y="0" width="680" height="450" rx="12" fill="#efe0b8"/>
+<path d="M340 0 H668 Q680 0 680 12 V438 Q680 450 668 450 H340 Z" fill="#fbdcc6"/>
+<ellipse cx="200" cy="335" rx="115" ry="14" fill="#d9c58f"/>
+<ellipse cx="510" cy="338" rx="125" ry="24" fill="#2f3600"/>
+<path d="M20 175 C40 150 55 130 64 116" fill="none" stroke="#7a0a2c" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M60 118 L135 84 L104 126 L95 108 Z" fill="#fdf5e0" stroke="#7a0a2c" stroke-width="1"/>
+<rect x="120" y="28" width="112" height="34" rx="10" fill="#fdf5e0" stroke="#7a0a2c" stroke-width="0.5"/>
+<path d="M185 62 L202 62 L204 80 Z" fill="#fdf5e0" stroke="#7a0a2c" stroke-width="0.5"/>
+<rect x="187" y="61" width="14" height="3" fill="#fdf5e0"/>
+<text x="176" y="50" text-anchor="middle" class="ts" style="fill:#7a0a2c">Goodbye…</text>
+<g transform="translate(200 225) rotate(-5)">
+<path d="M-95 20 Q-115 40 -122 64" fill="none" stroke="#7a0a2c" stroke-width="7" stroke-linecap="round"/>
+<path d="M95 20 Q112 38 108 58" fill="none" stroke="#7a0a2c" stroke-width="7" stroke-linecap="round"/>
+<path d="M-25 68 L-32 100 M25 68 L30 100" fill="none" stroke="#2f3600" stroke-width="6" stroke-linecap="round"/>
+<ellipse cx="-38" cy="104" rx="13" ry="5" fill="#2f3600"/><ellipse cx="36" cy="104" rx="13" ry="5" fill="#2f3600"/>
+<g fill="#7a0a2c"><circle cx="-55" cy="-20" r="45"/><circle cx="0" cy="-38" r="48"/><circle cx="55" cy="-20" r="45"/><circle cx="-60" cy="25" r="40"/><circle cx="60" cy="25" r="40"/><circle cx="0" cy="22" r="50"/></g>
+<g fill="none" stroke="#a03a55" stroke-width="2.5" stroke-linecap="round"><path d="M-80 -35 C-60 -20 -70 0 -50 5"/><path d="M-30 -68 C-20 -52 -35 -42 -20 -28"/><path d="M30 -68 C40 -52 25 -42 40 -28"/><path d="M78 -30 C58 -18 68 0 48 8"/><path d="M-78 32 C-58 42 -62 56 -36 62"/><path d="M78 32 C58 42 62 56 36 62"/></g>
+<ellipse cx="-25" cy="5" rx="11" ry="13" fill="#fdf5e0"/><ellipse cx="25" cy="5" rx="11" ry="13" fill="#fdf5e0"/>
+<circle cx="-28" cy="10" r="5" fill="#2f3600"/><circle cx="22" cy="10" r="5" fill="#2f3600"/>
+<path d="M-42 -6 L-15 -17 M42 -6 L15 -17" fill="none" stroke="#fdf5e0" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M-17 40 Q0 27 17 40" fill="none" stroke="#fdf5e0" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M-31 22 C-27 28 -25 31 -31 34 C-37 31 -35 28 -31 22 Z" fill="#f2a67f"/>
+<rect x="-148" y="62" width="50" height="38" rx="4" fill="#2f3600"/><rect x="-148" y="76" width="50" height="6" fill="#f2a67f"/>
+<path d="M-134 62 V53 H-112 V62" fill="none" stroke="#2f3600" stroke-width="3"/>
+</g>
+<g fill="#7a0a2c"><path d="M0 -12 C7 -3 9 3 0 9 C-9 3 -7 -3 0 -12 Z" transform="translate(300 250)" opacity="0.6"/><path d="M0 -12 C7 -3 9 3 0 9 C-9 3 -7 -3 0 -12 Z" transform="translate(315 300)" opacity="0.35"/><path d="M0 -12 C7 -3 9 3 0 9 C-9 3 -7 -3 0 -12 Z" transform="translate(45 240)" opacity="0.4"/></g>
+<g fill="#f2a67f"><ellipse cx="290" cy="130" rx="9" ry="5" transform="rotate(30 290 130)"/><ellipse cx="310" cy="190" rx="8" ry="4" transform="rotate(-20 310 190)" opacity="0.7"/><ellipse cx="60" cy="300" rx="7" ry="4" opacity="0.6"/></g>
+<g transform="translate(510 225)">
+<path d="M-92 15 Q-112 -5 -110 -35 M92 15 Q112 -5 110 -35" fill="none" stroke="#f2a67f" stroke-width="7" stroke-linecap="round"/>
+<path d="M-25 68 L-28 98 M25 68 L28 98" fill="none" stroke="#2f3600" stroke-width="6" stroke-linecap="round"/>
+<ellipse cx="-33" cy="102" rx="13" ry="5" fill="#2f3600"/><ellipse cx="33" cy="102" rx="13" ry="5" fill="#2f3600"/>
+<g fill="#f2a67f"><circle cx="-55" cy="-20" r="45"/><circle cx="0" cy="-38" r="48"/><circle cx="55" cy="-20" r="45"/><circle cx="-60" cy="25" r="40"/><circle cx="60" cy="25" r="40"/><circle cx="0" cy="22" r="50"/></g>
+<g fill="none" stroke="#e8465a" stroke-width="2.5" stroke-linecap="round"><path d="M-80 -35 C-60 -20 -70 0 -50 5"/><path d="M-30 -60 C-20 -46 -35 -38 -20 -26"/><path d="M30 -60 C40 -46 25 -38 40 -26"/><path d="M80 -35 C60 -20 70 0 50 5"/><path d="M-78 32 C-58 42 -62 56 -36 62"/><path d="M78 32 C58 42 62 56 36 62"/></g>
+<path d="M-32 -68 V-50 Q0 -38 32 -50 V-68" fill="#a80f3c"/>
+<path d="M-60 -76 L0 -102 L60 -76 L0 -56 Z" fill="#7a0a2c"/>
+<path d="M46 -80 L56 -52" fill="none" stroke="#efe0b8" stroke-width="2"/><circle cx="56" cy="-49" r="4" fill="#e8b830"/>
+<path d="M-38 8 Q-26 -7 -14 8 M14 8 Q26 -7 38 8" fill="none" stroke="#7a0a2c" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-44" cy="24" r="8" fill="#e8465a" opacity="0.6"/><circle cx="44" cy="24" r="8" fill="#e8465a" opacity="0.6"/>
+<path d="M-22 26 Q0 54 22 26 Z" fill="#7a0a2c"/><ellipse cx="0" cy="40" rx="8" ry="4" fill="#e8465a"/>
+<g transform="translate(-112 -46) scale(0.5)"><g fill="#e8465a"><ellipse rx="20" ry="11"/><ellipse rx="20" ry="11" transform="rotate(45)"/><ellipse rx="20" ry="11" transform="rotate(90)"/><ellipse rx="20" ry="11" transform="rotate(135)"/></g><circle r="7" fill="#efe0b8"/></g>
+<g transform="translate(112 -46) scale(0.5)"><g fill="#a80f3c"><ellipse rx="20" ry="11"/><ellipse rx="20" ry="11" transform="rotate(45)"/><ellipse rx="20" ry="11" transform="rotate(90)"/><ellipse rx="20" ry="11" transform="rotate(135)"/></g><circle r="7" fill="#efe0b8"/></g>
+</g>
+<g transform="translate(415 328) scale(0.8)"><g fill="#e8465a"><ellipse rx="20" ry="11"/><ellipse rx="20" ry="11" transform="rotate(45)"/><ellipse rx="20" ry="11" transform="rotate(90)"/><ellipse rx="20" ry="11" transform="rotate(135)"/></g><circle r="7" fill="#efe0b8"/><circle r="3" fill="#e8b830"/></g>
+<g transform="translate(605 330) scale(0.9)"><g fill="#f2a67f"><ellipse rx="20" ry="11"/><ellipse rx="20" ry="11" transform="rotate(45)"/><ellipse rx="20" ry="11" transform="rotate(90)"/><ellipse rx="20" ry="11" transform="rotate(135)"/></g><circle r="7" fill="#efe0b8"/><circle r="3" fill="#e8b830"/></g>
+<g transform="translate(510 334) scale(0.7)"><g fill="#a80f3c"><ellipse rx="20" ry="11"/><ellipse rx="20" ry="11" transform="rotate(45)"/><ellipse rx="20" ry="11" transform="rotate(90)"/><ellipse rx="20" ry="11" transform="rotate(135)"/></g><circle r="7" fill="#efe0b8"/><circle r="3" fill="#e8b830"/></g>
+<rect x="470" y="28" width="112" height="34" rx="10" fill="#fffdf7" stroke="#a80f3c" stroke-width="0.5"/>
+<path d="M512 62 L530 62 L520 80 Z" fill="#fffdf7" stroke="#a80f3c" stroke-width="0.5"/>
+<rect x="513" y="61" width="16" height="3" fill="#fffdf7"/>
+<text x="526" y="50" text-anchor="middle" class="ts" style="fill:#a80f3c">Welcome!</text>
+<g fill="#e8b830"><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z" transform="translate(620 130)"/><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z" transform="translate(400 110) scale(0.8)"/></g>
+<g fill="#e8465a"><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z" transform="translate(632 220) scale(0.7)"/><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z" transform="translate(385 200) scale(0.7)"/></g>
+<text x="200" y="402" text-anchor="middle" class="th" style="fill:#7a0a2c">Brain drain</text>
+<text x="200" y="422" text-anchor="middle" class="ts" style="fill:#6b5a3c">Talent packs up and leaves</text>
+<text x="510" y="402" text-anchor="middle" class="th" style="fill:#a80f3c">Brain gain</text>
+<text x="510" y="422" text-anchor="middle" class="ts" style="fill:#6b5a3c">Talent arrives and blooms</text>
+</svg>`;
+function renderIntro() {
+  app.innerHTML = `
+    ${HERO}
+    <h1>Brain Drain or Brain Gain?</h1>
+    <p class="muted">A study of typing, thinking and remembering</p>
+    <h2>About this study</h2>
+    <p>This study looks at how writing on your own compares with writing with the help of AI: how demanding each feels, and how much of it you remember afterwards. It takes about 20 minutes.</p>
+    <div class="info">
+      <h2>What you will do</h2>
+      <ul>
+        <li>Write two short counterarguments (${MIN_WORDS}–${MAX_WORDS} words each) to a statement. For one you write on your own, and for the other you may use an AI tool.</li>
+        <li>After each one, rate how demanding it felt and how confident you are.</li>
+        <li>Answer a few memory questions from memory, without looking anything up.</li>
+      </ul>
+      <p class="muted">We record your answers, your typing pattern (pauses, deletions, and whether text was pasted) and whether you left this page while writing. We do not record your screen, camera or AI chat.</p>
+    </div>
+    <div class="info">
+      <h2>Consent</h2>
+      <ul>
+        <li>Taking part is voluntary. You can stop at any time by closing this page, and nothing is sent until you finish.</li>
+        <li>There are no right or wrong answers, and your responses have no effect on your grades.</li>
+        <li>Your name is used only to identify your submission and is kept confidential. Results are reported without names and used only for academic research.</li>
+        <li>There are no known risks beyond those of everyday computer use.</li>
+      </ul>
+      ${RESEARCHER_CONTACT ? `<p class="muted">Questions about the study? Email the researcher at <a href="mailto:${esc(RESEARCHER_CONTACT)}">${esc(RESEARCHER_CONTACT)}</a>.</p>` : ""}
+    </div>
+    <p class="muted">This study is open to university students (UG, PG and PhD) and to faculty.</p>
+    <label for="name">Full name</label>
+    <input type="text" id="name" autocomplete="name" placeholder="Your name">
+    <label for="degree">Degree</label>
+    <select id="degree">
+      <option value="">Select…</option>
+      <option data-level="undergraduate">UG 1st year</option>
+      <option data-level="undergraduate">UG 2nd year</option>
+      <option data-level="undergraduate">UG 3rd year</option>
+      <option data-level="undergraduate">UG 4th year</option>
+      <option data-level="postgraduate">PG 1st year</option>
+      <option data-level="postgraduate">PG 2nd year</option>
+      <option data-level="doctoral">PhD</option>
+      <option data-level="faculty">Faculty</option>
+    </select>
+    <label for="stream">Stream</label>
+    <input type="text" id="stream" placeholder="e.g. Computer Science, Commerce, Biology">
+    <label for="age">Age</label>
+    <input type="number" id="age" min="16" max="70" inputmode="numeric" placeholder="e.g. 20">
+    <label for="gender">Gender</label>
+    <select id="gender">
+      <option value="">Select…</option>
+      <option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option>
+    </select>
+    <label for="english">How comfortable are you writing in English?</label>
+    <select id="english">
+      <option value="">Select…</option>
+      <option>Very comfortable</option><option>Comfortable</option><option>Somewhat comfortable</option><option>Not very comfortable</option>
+    </select>
+    <label for="aifreq">How often do you use AI tools (ChatGPT, Gemini, Claude, Copilot, etc.) for study, teaching or writing?</label>
+    <select id="aifreq">
+      <option value="">Select…</option>
+      <option>Never</option><option>A few times a year</option><option>About once a month</option><option>About once a week</option><option>Almost every day</option>
+    </select>
+    <label class="opt"><input type="checkbox" id="consent"> I am a university student or faculty member, I have read the information above, and I agree to take part voluntarily.</label>
+    <div class="err" id="err"></div>
+    <button id="next">Start</button>`;
+  $("#next").onclick = () => {
+    const name = $("#name").value.trim();
+    const degreeEl = $("#degree"), degree = degreeEl.value, level = degree ? degreeEl.selectedOptions[0].dataset.level : "";
+    const stream = $("#stream").value.trim();
+    const age = parseInt($("#age").value, 10), gender = $("#gender").value;
+    const english = $("#english").value, aifreq = $("#aifreq").value;
+    if (!name) return $("#err").textContent = "Enter your name.";
+    if (!degree) return $("#err").textContent = "Select your degree.";
+    if (!stream) return $("#err").textContent = "Enter your stream.";
+    if (!(age >= 16 && age <= 70)) return $("#err").textContent = "Enter your age.";
+    if (!gender) return $("#err").textContent = "Select your gender.";
+    if (!english) return $("#err").textContent = "Select how comfortable you are writing in English.";
+    if (!aifreq) return $("#err").textContent = "Select how often you use AI tools.";
+    if (!$("#consent").checked) return $("#err").textContent = "Please confirm consent to continue.";
+    data.participant = { name, level, degree, stream, age, gender, english_comfort: english, ai_use_frequency: aifreq };
+    go(1);
+  };
+}
+
+function renderTask(n) {
+  const cond = order[n - 1];
+  const isAI = cond === "ai";
+  app.innerHTML = `
+    <h2>Task ${n} of 2</h2>
+    <p class="muted">${isAI
+      ? "For this task you <b>may use an AI tool</b> (ChatGPT, Gemini, Claude, Copilot, etc.)."
+      : "For this task write <b>on your own</b>. Please do not use AI tools, search engines or other people. Pasting is turned off for this task."}</p>
+    <p class="muted">Read the statement, then write a short counterargument: give at least one clear reason why it may be wrong or incomplete.</p>
+    <div class="prompt">Statement: ${esc(PROMPTS[cond])}</div>
+    <label for="resp">Your counterargument (${MIN_WORDS}–${MAX_WORDS} words)</label>
+    <textarea id="resp" spellcheck="true"></textarea>
+    <div class="count"><span id="wc" aria-live="polite">0 words</span><span id="tm">0:00</span></div>
+
+    <h2 style="margin-top:28px">About this task</h2>
+    ${isAI ? `
+      <label for="tool">Which AI tool did you use?</label>
+      <input type="text" id="tool" placeholder="e.g. ChatGPT, Gemini, Claude, Copilot">
+      <label>How did you use the AI?</label>
+      ${AI_USE_TYPES.map((t, i) => `<label class="opt"><input type="radio" name="aiuse" value="${i}"> ${esc(t)}</label>`).join("")}
+    ` : ""}
+    ${isAI ? "" : `<label>Did you write this without any AI or outside help? <span class="muted">(Any answer is fine and will not affect anything.)</span></label>${HONESTY.map((t, i) => `<label class="opt"><input type="radio" name="honesty" value="${i}"> ${esc(t)}</label>`).join("")}`}
+    <h2 style="margin-top:28px">Workload (NASA-TLX)</h2>
+    <p class="muted">Move each slider to show how this task felt for you. Scale: 0 to 100.</p>
+    ${tlxHTML()}
+    <label>How confident are you in your response?</label>
+    ${scale("confidence", "not at all", "very confident")}
+    <div class="err" id="err"></div>
+    <button id="next">Next: memory check</button>`;
+
+  bindTLX();
+  tracker = startTracker($("#resp"));
+  if (!isAI) {
+    ["paste", "drop"].forEach(ev => $("#resp").addEventListener(ev, e => {
+      e.preventDefault();
+      $("#err").textContent = "Pasting is turned off for this task. Please type your answer.";
+    }));
+  }
+  $("#resp").addEventListener("input", () => {
+    const w = words($("#resp").value);
+    $("#wc").innerHTML = (w >= MIN_WORDS && w <= MAX_WORDS) ? `<span class="ok">${w} words ✓</span>` : `${w} words`;
+  });
+  const t0 = Date.now();
+  const timer = setInterval(() => {
+    if (!$("#tm")) return clearInterval(timer);
+    const s = Math.floor((Date.now() - t0) / 1000);
+    $("#tm").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }, 1000);
+
+  $("#next").onclick = () => {
+    const text = $("#resp").value, w = words(text);
+    const val = name => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+    if (w < MIN_WORDS || w > MAX_WORDS) return $("#err").textContent = `Your response has ${w} words. Please write between ${MIN_WORDS} and ${MAX_WORDS}.`;
+    if (isAI && !$("#tool").value.trim()) return $("#err").textContent = "Enter which AI tool you used.";
+    if (isAI && val("aiuse") === undefined) return $("#err").textContent = "Select how you used the AI.";
+    if (!isAI && val("honesty") === undefined) return $("#err").textContent = "Answer the question about whether you used any help.";
+    if (!tlxDone()) return $("#err").textContent = "Please move every workload slider (even if you keep it in the middle).";
+    if (!val("confidence")) return $("#err").textContent = "Rate how confident you are in your response.";
+    clearInterval(timer);
+    data.tasks[cond] = {
+      position: n, prompt: PROMPTS[cond], response: text, word_count: w,
+      own_work_check: isAI ? null : HONESTY[+val("honesty")],
+      ai_tool: isAI ? $("#tool").value.trim() : null,
+      ai_use_type: isAI ? AI_USE_TYPES[+val("aiuse")] : null,
+      nasa_tlx: tlxValues(), confidence: +val("confidence"),
+      behaviour: tracker.finish()
+    };
+    renderQuiz(n, cond);
+  };
+}
+
+function renderQuiz(n, cond) {
+  window.scrollTo(0, 0);
+  app.innerHTML = `
+    <h2>Memory check for Task ${n} of 2</h2>
+    <p>Your response is now hidden. Answer from memory, without looking anything up. If you don't remember something, write "don't remember".</p>
+    <label for="q1">1. In one or two sentences, what was the main point of your counterargument?</label>
+    <textarea id="q1" style="min-height:80px"></textarea>
+    <label for="q2">2. List the specific reasons or examples you used. Write as many as you remember.</label>
+    <textarea id="q2" style="min-height:100px"></textarea>
+    <label for="q3">3. What is the strongest point someone could make against your counterargument?</label>
+    <textarea id="q3" style="min-height:80px"></textarea>
+    <label>4. How well do you remember what you wrote?</label>
+    ${scale("recall_conf", "hardly at all", "almost everything")}
+    <label>5. While answering these questions, did you look at anything (your response, an AI chat, notes, other tabs)?</label>
+    <label class="opt"><input type="radio" name="peek" value="No"> No</label>
+    <label class="opt"><input type="radio" name="peek" value="Yes"> Yes</label>
+    <div class="err" id="err"></div>
+    <button id="next">${n === 1 ? "Continue to Task 2" : "Finish"}</button>`;
+
+  const t0 = Date.now(); let lost = 0;
+  const bl = () => lost++, vis = () => { if (document.hidden) lost++; };
+  window.addEventListener("blur", bl); document.addEventListener("visibilitychange", vis);
+
+  $("#next").onclick = () => {
+    const val = name => (document.querySelector(`input[name=${name}]:checked`) || {}).value;
+    const q1 = $("#q1").value.trim(), q2 = $("#q2").value.trim(), q3 = $("#q3").value.trim();
+    if (!q1 || !q2 || !q3) return $("#err").textContent = 'Please answer questions 1 to 3 (write "don\'t remember" if you can\'t recall).';
+    if (!val("recall_conf") || !val("peek")) return $("#err").textContent = "Please answer questions 4 and 5.";
+    window.removeEventListener("blur", bl); document.removeEventListener("visibilitychange", vis);
+    data.tasks[cond].quiz = {
+      main_point: q1, reasons_recalled: q2, strongest_counterpoint: q3,
+      recall_confidence: +val("recall_conf"), looked_at_something: val("peek"),
+      seconds: Math.round((Date.now() - t0) / 1000), focus_lost: lost
+    };
+    if (n === 1) go(2); else submit();
+  };
+}
+
+function renderDone() {
+  const json = JSON.stringify(data);
+  app.innerHTML = `<h1>Thank you</h1>
+    <div class="notice"><b>Almost done.</b> Your responses are <b>not submitted yet</b>. Choose <b>either</b> option below to get your responses into the Google Form.</div>
+    <div class="opts">
+      <div class="info">
+        <h2>Option 1: Copy and paste</h2>
+        <p class="muted">Copy your responses, then paste them into the long-answer question in the Google Form.</p>
+        <button id="copy">Copy all responses</button>
+        <div class="err" id="cmsg" role="status"></div>
+        <details><summary class="muted">Copy button not working? Copy the text manually</summary>
+          <textarea id="raw" readonly style="min-height:110px;margin-top:8px"></textarea></details>
+      </div>
+      <div class="info">
+        <h2>Option 2: Upload a file</h2>
+        <p class="muted">Download your responses as a file, then upload it in the file upload question in the Google Form. You will need to sign in to Google to upload.</p>
+        <button id="dl">Download my responses</button>
+      </div>
+    </div>
+    <div class="notice"><b>Then:</b> open the Google Form, paste or upload your responses, and press <b>Submit</b> there. Your responses reach the researcher only after you do this.
+      ${GOOGLE_FORM_URL ? `<div><a class="btn" href="${GOOGLE_FORM_URL}" target="_blank" rel="noopener">Open the Google Form</a></div>` : ""}</div>`;
+  $("#raw").value = json;
+  const copied = () => { $("#cmsg").style.color = "var(--ok)"; $("#cmsg").textContent = "Copied. Now paste it into the Google Form."; };
+  const manual = () => {
+    const t = $("#raw"); t.parentElement.open = true; t.focus(); t.select();
+    $("#cmsg").style.color = "";
+    $("#cmsg").textContent = "Your browser blocked automatic copying. The text is selected below: press Ctrl+C (Cmd+C on Mac) to copy it.";
+  };
+  $("#copy").onclick = async () => {
+    try { await navigator.clipboard.writeText(json); return copied(); } catch (e) {}
+    try {
+      const t = $("#raw"); t.parentElement.open = true; t.focus(); t.select();
+      if (document.execCommand("copy")) return copied();
+    } catch (e) {}
+    manual();
+  };
+  $("#dl").onclick = download;
+}
+
+/* ---------- KEYSTROKE / BEHAVIOUR TRACKING ---------- */
+function startTracker(el) {
+  const m = { keydowns: 0, backspaces: 0, paste_events: 0, pasted_chars: 0, pauses_over_2s: 0, focus_lost: 0 };
+  let first = null, last = null;
+  const kd = e => {
+    const now = Date.now();
+    if (first === null) first = now;
+    if (last !== null && now - last > 2000) m.pauses_over_2s++;
+    last = now; m.keydowns++;
+    if (e.key === "Backspace" || e.key === "Delete") m.backspaces++;
+  };
+  const ps = e => { m.paste_events++; m.pasted_chars += ((e.clipboardData || window.clipboardData).getData("text") || "").length; };
+  const bl = () => m.focus_lost++;
+  const vis = () => { if (document.hidden) m.focus_lost++; };
+  el.addEventListener("keydown", kd); el.addEventListener("paste", ps);
+  window.addEventListener("blur", bl); document.addEventListener("visibilitychange", vis);
+  const began = Date.now();
+  return { finish() {
+    el.removeEventListener("keydown", kd); el.removeEventListener("paste", ps);
+    window.removeEventListener("blur", bl); document.removeEventListener("visibilitychange", vis);
+    return { ...m, total_seconds: Math.round((Date.now() - began) / 1000),
+             typing_seconds: first ? Math.round((last - first) / 1000) : 0 };
+  } };
+}
+
+/* ---------- SUBMIT ---------- */
+function download() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "response_" + Date.now() + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+async function submit() {
+  data.submitted_at = new Date().toISOString();
+  let ok = false;
+  if (ENDPOINT) {
+    try {
+      await fetch(ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(data) });
+      ok = true;
+    } catch (e) { ok = false; }
+  }
+  go(3, ok);
+}
+
+/* ---------- ROUTER ---------- */
+function go(s, ok) {
+  step = s; setProgress(); window.scrollTo(0, 0);
+  if (s === 0) renderIntro();
+  else if (s === 1) renderTask(1);
+  else if (s === 2) renderTask(2);
+  else renderDone(ok);
+}
+go(0);
+</script>
+</body>
+</html>
